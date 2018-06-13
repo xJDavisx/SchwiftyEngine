@@ -71,18 +71,12 @@ namespace SDL2
 	{
 		/* Used by DllImport to load the native library. */
 
-		#region Private Fields
-
 		private const string nativeLibName = "SDL2_ttf.dll";
-
-		#endregion Private Fields
 
 		/* Similar to the headers, this is the version we're expecting to be
 		 * running with. You will likely want to check this somewhere in your
 		 * program!
 		 */
-
-		#region Public Fields
 
 		public const int SDL_TTF_MAJOR_VERSION = 2;
 		public const int SDL_TTF_MINOR_VERSION = 0;
@@ -99,10 +93,6 @@ namespace SDL2
 		public const int TTF_STYLE_UNDERLINE = 0x04;
 		public const int UNICODE_BOM_NATIVE = 0xFEFF;
 		public const int UNICODE_BOM_SWAPPED = 0xFFFE;
-
-		#endregion Public Fields
-
-		#region Private Methods
 
 		[DllImport(nativeLibName, EntryPoint = "TTF_FontFaceFamilyName", CallingConvention = CallingConvention.Cdecl)]
 		private static extern IntPtr INTERNAL_TTF_FontFaceFamilyName(
@@ -159,10 +149,6 @@ namespace SDL2
 			byte[] text,
 			SDL.SDL_Color fg
 		);
-
-		#endregion Private Methods
-
-		#region Public Methods
 
 		[DllImport(nativeLibName, EntryPoint = "TTF_SizeUTF8", CallingConvention = CallingConvention.Cdecl)]
 		public static extern int INTERNAL_TTF_SizeUTF8(
@@ -545,8 +531,6 @@ namespace SDL2
 
 		[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int TTF_WasInit();
-
-		#endregion Public Methods
 
 		/* font refers to a TTF_Font* */
 	}
