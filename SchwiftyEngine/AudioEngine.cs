@@ -1,0 +1,105 @@
+﻿/*|
+|*|_____________________________________________________________________________________________________________________________
+|*|  Schwifty Engine                                                                                                             |*|
+|*|  GNU GPLv3 https://www.gnu.org/licenses/gpl-3.0.en.html                                                                     |*|
+|*|                                                                                                                             |*|
+|*|  Copyright © 2018 Jesse Davis                                                                                               |*|
+|*|_____________________________________________________________________________________________________________________________|*|
+|*|                                                                                                                             |*|
+|*|  This software is provided 'as-is', without any express or implied warranty.                                                |*|
+|*|  In no event will the authors be held liable for any damages arising from                                                   |*|
+|*|  the use of this software.                                                                                                  |*|
+|*|                                                                                                                             |*|
+|*|  Permission is granted to anyone to use this software for any purpose,                                                      |*|
+|*|  including commercial applications, and to alter it and redistribute it                                                     |*|
+|*|  freely, subject to the following restrictions:                                                                             |*|
+|*|                                                                                                                             |*|
+|*|  1. The origin of this software must not be misrepresented; you must not                                                    |*|
+|*|  claim that you wrote the original software. If you use this software in a                                                  |*|
+|*|  product, an acknowledgment in the product documentation would be                                                           |*|
+|*|  appreciated but is not required.                                                                                           |*|
+|*|                                                                                                                             |*|
+|*|  2. Altered source versions must be plainly marked as such, and must not be                                                 |*|
+|*|  misrepresented as being the original software.                                                                             |*|
+|*|                                                                                                                             |*|
+|*|  3. This notice may not be removed or altered from any source distribution.                                                 |*|
+|*|_____________________________________________________________________________________________________________________________|*|
+|*|                                                                                                                             |*|
+|*|  Created by Jesse Davis, hereto referred to as "I" or "me", unless stated elsewhere in the source code file or the license. |*|
+|*|  Any alterations to source code made by other developers were done with respect to their license.                           |*|
+|*|  Use of source code authored by other developers are subject to their respective licenses.                                  |*|
+|*|_____________________________________________________________________________________________________________________________|*|
+|*|                                                                                                                             |*|
+|*|   Contact Info:                                                                                                             |*|
+|*|      Github - xJDavisx                                                                                                      |*|
+|*|      Discord - JesseD92                                                                                                     |*|
+|*|_____________________________________________________________________________________________________________________________|*|
+|*/
+
+using System;
+using static SDL2.SDL;
+using static SDL2.SDL_mixer;
+
+namespace SchwiftyEngine
+{
+	public static class AudioEngine
+	{
+		internal static void Init()
+		{
+			SDL_InitSubSystem(SDL_INIT_AUDIO);
+			Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 128);
+		}
+
+		/// <summary>
+		/// Checks if a channel is playing sound, or how many channels are playing sound.
+		/// </summary>
+		/// <param name="channel">
+		/// The channel to check. -1 for the number of channels that are currently playing sound.
+		/// </param>
+		/// <returns>
+		/// 0 if false, 1 if true, or the number of channels playing sound if the "channel" parameter
+		/// is -1.
+		/// </returns>
+		internal static int IsChannelPlaying(int channel)
+		{
+			return Mix_Playing(channel);
+		}
+
+		internal static IntPtr LoadSound(string filepath)
+		{
+			return Mix_LoadWAV(filepath);
+		}
+
+		/// <summary>
+		/// Plays a sound on the next free channel.
+		/// </summary>
+		/// <param name="mySound">Sound pointer to play.</param>
+		/// <param name="loops">
+		/// Number of loops. -1 to loop infinite times. 0 to play once. 1 to play twice, etc...
+		/// </param>
+		/// <returns>The channel the sound is played on.</returns>
+		internal static int PlaySound(IntPtr mySound, int loops)
+		{
+			return Mix_PlayChannel(-1, mySound, loops);
+		}
+
+		/// <summary>
+		/// Plays a sound.
+		/// </summary>
+		/// <param name="channel">The channel to play on.</param>
+		/// <param name="mySound">Sound pointer to play.</param>
+		/// <param name="loops">
+		/// Number of loops. -1 to loop infinite times. 0 to play once. 1 to play twice, etc...
+		/// </param>
+		/// <returns>The channel the sound is played on.</returns>
+		internal static int PlaySound(int channel, IntPtr mySound, int loops)
+		{
+			return Mix_PlayChannel(channel, mySound, loops);
+		}
+
+		internal static void StopSound(int channel)
+		{
+			Mix_HaltChannel(channel);
+		}
+	}
+}
