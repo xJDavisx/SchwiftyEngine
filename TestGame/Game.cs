@@ -63,9 +63,20 @@ namespace TestGame
 			Player p = player.AddComponent<Player>();
 			Sprite s = player.AddComponent<Sprite>();
 			s.LoadTexture(Resource.texturePath + "player\\player-spritemap-v9.png");
-
+			s.ScaleX = .1f;
+			s.ScaleY = .1f;
 			s.enabled = true;
 			p.enabled = true;
+
+			Entity player2 = Entity.AddEntity("Player2");
+			Player p2 = player2.AddComponent<Player>();
+			Sprite s2 = player2.AddComponent<Sprite>();
+			s2.LoadTexture(Resource.texturePath + "player\\player-spritemap-v9.png");
+			s2.ScaleX = .1f;
+			s2.ScaleY = .1f;
+			p2.playerNumber = 2;
+			s2.enabled = true;
+			p2.enabled = true;
 		}
 	}
 }

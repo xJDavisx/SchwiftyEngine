@@ -50,42 +50,75 @@ namespace TestGame
 {
 	public class DrawGrid : GameBehaviour
 	{
+		//distance the grid will draw from (0,0) in world units.
 		private int distance = 1000;
-		private int lineLength;
+
 		private Renderer r;
-		private int unitLength = 50;
+
+		//x colors
 		private Color xColor = new Color(255, 0, 0, 255);
-		private Color xColorFaded = new Color(255, 0, 0, 50);
+
+		private Color xColorFaded100s = new Color(255, 0, 0, 150);
+		private Color xColorFaded10s = new Color(255, 0, 0, 100);
+		private Color xColorFaded1s = new Color(255, 0, 0, 50);
+
+		//y colors
 		private Color yColor = new Color(0, 255, 0, 255);
-		private Color yColorFaded = new Color(0, 255, 0, 50);
+
+		private Color yColorFaded100s = new Color(0, 255, 0, 100);
+		private Color yColorFaded10s = new Color(0, 255, 0, 75);
+		private Color yColorFaded1s = new Color(0, 255, 0, 50);
 
 		private void Draw()
 		{
-			float zoom = Camera.main.zoom;
+			int ppu = Camera.main.PixelsPerUnit;
+			int lineLength = ppu * distance;
 			Vector2 screenPos = transform.PositionScreen;
+
+			//draw the initial X line where X = 0
 			r.DrawColor = xColor;
-			r.DrawLine(screenPos + Vector2.Left * lineLength * zoom, screenPos + Vector2.Right * lineLength * zoom);
-			r.DrawColor = xColorFaded;
-			for (int i = 0; i < distance; i++)
+			r.DrawLine(screenPos + Vector2.Left * lineLength, screenPos + Vector2.Right * lineLength);
+
+			//draw the initial Y line where Y = 0
+			r.DrawColor = yColor;
+			r.DrawLine(screenPos + Vector2.Up * lineLength, screenPos + Vector2.Down * lineLength);
+
+			//loop through and draw the rest of the Y lines
+			for (int i = 1; i < distance; i++)
 			{
-				r.DrawLine((screenPos + Vector2.Left * lineLength * zoom) + (Vector2.Up * (i * unitLength * zoom)), (screenPos + Vector2.Right * lineLength * zoom) + (Vector2.Up * (i * unitLength) * zoom));
-				r.DrawLine((screenPos + Vector2.Left * lineLength * zoom) + (Vector2.Down * (i * unitLength * zoom)), (screenPos + Vector2.Right * lineLength * zoom) + (Vector2.Down * (i * unitLength) * zoom));
+				r.DrawColor = yColorFaded1s;
+				if (i % 10 == 0)
+				{
+					r.DrawColor = yColorFaded10s;
+				}
+				if (i % 100 == 0)
+				{
+					r.DrawColor = yColorFaded100s;
+				}
+				r.DrawLine((screenPos + Vector2.Up * lineLength) + (Vector2.Left * (i * ppu)), (screenPos + Vector2.Down * lineLength) + (Vector2.Left * (i * ppu)));
+				r.DrawLine((screenPos + Vector2.Up * lineLength) + (Vector2.Right * (i * ppu)), (screenPos + Vector2.Down * lineLength) + (Vector2.Right * (i * ppu)));
 			}
 
-			r.DrawColor = yColor;
-			r.DrawLine(screenPos + Vector2.Up * lineLength * zoom, screenPos + Vector2.Down * lineLength * zoom);
-			r.DrawColor = yColorFaded;
-			for (int i = 0; i < distance; i++)
+			//loop through and draw the rest of the X lines
+			for (int i = 1; i < distance; i++)
 			{
-				r.DrawLine((screenPos + Vector2.Up * lineLength * zoom) + (Vector2.Left * (i * unitLength) * zoom), (screenPos + Vector2.Down * lineLength * zoom) + (Vector2.Left * (i * unitLength) * zoom));
-				r.DrawLine((screenPos + Vector2.Up * lineLength * zoom) + (Vector2.Right * (i * unitLength) * zoom), (screenPos + Vector2.Down * lineLength * zoom) + (Vector2.Right * (i * unitLength) * zoom));
+				r.DrawColor = xColorFaded1s;
+				if (i % 10 == 0)
+				{
+					r.DrawColor = xColorFaded10s;
+				}
+				if (i % 100 == 0)
+				{
+					r.DrawColor = xColorFaded100s;
+				}
+				r.DrawLine((screenPos + Vector2.Left * lineLength) + (Vector2.Up * (i * ppu)), (screenPos + Vector2.Right * lineLength) + (Vector2.Up * (i * ppu)));
+				r.DrawLine((screenPos + Vector2.Left * lineLength) + (Vector2.Down * (i * ppu)), (screenPos + Vector2.Right * lineLength) + (Vector2.Down * (i * ppu)));
 			}
 		}
 
 		private void Start()
 		{
 			r = Engine.Window.Renderer;
-			lineLength = unitLength * distance;
 		}
 	}
 }

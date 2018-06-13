@@ -1,0 +1,12 @@
+<VSTemplate Type="Item" Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name>SchwiftyEngine.GameBehaviour</Name>
+    <Description>A blank GameBehaviour for the Schwifty Engine.</Description>
+    <Icon>__TemplateIcon.ico</Icon>
+    <ProjectType>CSharp</ProjectType>
+    <DefaultName>GameBehaviour.cs</DefaultName>    
+  </TemplateData>
+  <TemplateContent>
+    <ProjectItem ReplaceParameters="true" TargetFileName="$fileinputname$.cs">template.cs</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

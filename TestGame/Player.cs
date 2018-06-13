@@ -46,74 +46,70 @@ namespace TestGame
 	{
 		private Camera cam;
 		private Vector2 gravity = new Vector2(0, 9.8f);
-		private bool isGrounded = false;
 		private Sprite playerSprite;
 		private Sound s = new Sound(Resource.soundPath + "test.wav");
-		private float speed = 60f;
+		private float speed = 0;
+		public float walkSpeed = 5f;
+		public float runSpeed = 10f;
 
-		public bool IsGrounded
-		{
-			get
-			{
-				return isGrounded;
-			}
-			private set
-			{
-				isGrounded = value;
-			}
-		}
+		public int playerNumber = 1;
 
 		private void Start()
 		{
 			cam = Camera.main;
 			playerSprite = GetComponent<Sprite>();
+			if(playerNumber == 1)
+			transform.Position = Vector2.Zero;
+			if(playerNumber == 2)
+				transform.Position = Vector2.Right * 100;
+			speed = walkSpeed;
 		}
 
 		private void Update()
 		{
-			if (Input.KeyUp(SDL_Keycode.SDLK_LSHIFT))
+			if (playerNumber == 1 && Input.KeyUp(SDL_Keycode.SDLK_LSHIFT))
 			{
-				speed = 1000;
+				speed = walkSpeed;
 			}
-			if (Input.KeyDown(SDL_Keycode.SDLK_LSHIFT))
+			if (playerNumber == 1 && Input.KeyDown(SDL_Keycode.SDLK_LSHIFT))
 			{
-				speed = 240;
+				speed = runSpeed;
 			}
-			if (Input.KeyPressed(SDL_Keycode.SDLK_d))
+			if (playerNumber == 1 && Input.KeyPressed(SDL_Keycode.SDLK_d))
 			{
 				transform.Translate(Vector2.Right * speed * Time.deltaTime);
 			}
-			if (Input.KeyPressed(SDL_Keycode.SDLK_a))
+			if (playerNumber == 1 && Input.KeyPressed(SDL_Keycode.SDLK_a))
 			{
 				transform.Translate(Vector2.Left * speed * Time.deltaTime);
 			}
-			if (Input.KeyPressed(SDL_Keycode.SDLK_w))
+			if (playerNumber == 1 && Input.KeyPressed(SDL_Keycode.SDLK_w))
 			{
 				transform.Translate(Vector2.Up * speed * Time.deltaTime);
 			}
-			if (Input.KeyPressed(SDL_Keycode.SDLK_s))
+			if (playerNumber == 1 && Input.KeyPressed(SDL_Keycode.SDLK_s))
 			{
 				transform.Translate(Vector2.Down * speed * Time.deltaTime);
 			}
 
-			if (Input.KeyUp(SDL_Keycode.SDLK_p))
+			if (playerNumber == 1 && Input.KeyUp(SDL_Keycode.SDLK_p))
 			{
 				s.PlayOnce();
 			}
 
-			if (Input.KeyPressed(SDL_Keycode.SDLK_UP))
+			if (playerNumber == 1 && Input.KeyPressed(SDL_Keycode.SDLK_UP))
 			{
-				playerSprite.ScaleX += 5 * Time.deltaTime;
-				playerSprite.ScaleY += 5 * Time.deltaTime;
+				playerSprite.ScaleX += .5f * Time.deltaTime;
+				playerSprite.ScaleY += .5f * Time.deltaTime;
 			}
 
-			if (Input.KeyUp(SDL_Keycode.SDLK_DOWN))
+			if (playerNumber == 1 && Input.KeyUp(SDL_Keycode.SDLK_DOWN))
 			{
-				playerSprite.ScaleX = 1;
-				playerSprite.ScaleY = 1;
+				playerSprite.ScaleX = .1f;
+				playerSprite.ScaleY = .1f;
 			}
 
-			if (Input.KeyUp(SDL_Keycode.SDLK_b))
+			if (playerNumber == 1 && Input.KeyUp(SDL_Keycode.SDLK_b))
 			{
 				playerSprite.DrawBounds = !playerSprite.DrawBounds;
 			}

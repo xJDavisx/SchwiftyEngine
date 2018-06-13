@@ -124,10 +124,9 @@ namespace SchwiftyEngine.CoreModule
 
 		private void Draw()
 		{
-			float zoom = Camera.main.zoom;
-			//TODO: fix this shit!
+			int ppu = Camera.main.PixelsPerUnit;
 			//this is the position and size of the image on the screen. use this to scale.
-			SDL_Rect DestinationRect = new SDL_Rect() { x = (int)(transform.PositionScreen.X - _origin.X * _scaleX * zoom), y = (int)(transform.PositionScreen.Y - _origin.Y * _scaleY * zoom), w = (int)(48 * _scaleX * zoom), h = (int)(50 * _scaleY * zoom) };
+			SDL_Rect DestinationRect = new SDL_Rect() { x = (int)(transform.PositionScreen.X - (_origin.X * ppu) * _scaleX), y = (int)(transform.PositionScreen.Y - (_origin.Y * ppu) * _scaleY), w = (int)(48 * ppu * _scaleX), h = (int)(50 * ppu * _scaleY)};
 
 			//this is the rect that determines what portion of the texture to show. think choosing an animation frame from a spritemap.
 			SDL_Rect SourceRect = new SDL_Rect() { x = 0, y = 0, w = 48, h = 50 };

@@ -50,7 +50,7 @@ namespace SchwiftyEngine.CoreModule
 	{
 		private static List<Camera> _cameras = new List<Camera>();
 		private static Camera _main = null;
-		private float _zoom = 1f;
+		private int _pixelsPerUnit = 5;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Camera"/> class.
@@ -81,20 +81,16 @@ namespace SchwiftyEngine.CoreModule
 			}
 		}
 
-		/// <summary>
-		/// Gets or sets the zoom of the <see cref="Camera"/> instance.
-		/// </summary>
-		/// <value>The zoom.</value>
-		public float zoom
+		public int PixelsPerUnit
 		{
 			get
 			{
-				return _zoom;
+				return _pixelsPerUnit;
 			}
 
 			set
 			{
-				_zoom = value;
+				_pixelsPerUnit = value > 0 ? value : 1;
 			}
 		}
 

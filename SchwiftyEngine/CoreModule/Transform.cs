@@ -86,10 +86,10 @@ namespace SchwiftyEngine.CoreModule
 			get
 			{
 				Vector2 camPos = Camera.main.transform.Position;
-				float zoom = Camera.main.zoom;
+				int ppu = Camera.main.PixelsPerUnit;
 
-				return new Vector2((Engine.Window.Width * .5f) - ((camPos.X * zoom) - transform.Position.X),
-					(Engine.Window.Height * .5f) + ((camPos.Y * zoom) - transform.Position.Y));
+				return new Vector2((Engine.Window.Width * .5f) - ((camPos.X - transform.Position.X) * ppu),
+					(Engine.Window.Height * .5f) + ((camPos.Y - transform.Position.Y) * ppu));
 			}
 		}
 

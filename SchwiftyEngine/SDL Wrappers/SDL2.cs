@@ -3133,6 +3133,16 @@ namespace SDL2
 				this.b = b;
 				this.a = a;
 			}
+
+			public static bool operator !=(SDL_Color x, SDL_Color y)
+			{
+				return (x.r != y.r || x.g != y.g || x.b != y.b || x.a != y.a);
+			}
+
+			public static bool operator ==(SDL_Color x, SDL_Color y)
+			{
+				return (x.r == y.r && x.g == y.g && x.b == y.b && x.a == y.a);
+			}
 		}
 
 		[StructLayout(LayoutKind.Sequential)]

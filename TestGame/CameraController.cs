@@ -49,18 +49,31 @@ namespace TestGame
 	{
 		private Player p;
 
+		private void SetPlayer(int playerNum)
+		{
+			p = FindObjectsOfType<Player>().Where(x => x.playerNumber == playerNum).First();
+		}
+
 		private void Start()
 		{
-			p = FindObjectOfType<Player>();
+			p = FindObjectsOfType<Player>().Where(x => x.playerNumber == 1).First();
 		}
 
 		private void Update()
 		{
-			transform.Position = Vector2.Lerp(p.transform.Position, transform.Position, Time.deltaTime * 5);
+			transform.Position = Vector2.Lerp(p.transform.Position, transform.Position, Time.deltaTime);
 			Vector2 scroll;
 			if (Input.MouseScrollWheel(out scroll))
 			{
-				Camera.main.zoom += scroll.Y * .01f;
+				Camera.main.PixelsPerUnit += (int)scroll.Y;
+			}
+			if (Input.KeyUp(SDL2.SDL.SDL_Keycode.SDLK_KP_1))
+			{
+				SetPlayer(1);
+			}
+			if (Input.KeyUp(SDL2.SDL.SDL_Keycode.SDLK_KP_2))
+			{
+				SetPlayer(2);
 			}
 		}
 	}

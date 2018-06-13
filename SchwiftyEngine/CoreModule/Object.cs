@@ -195,9 +195,21 @@ namespace SchwiftyEngine.CoreModule
 		/// Returns a list of all active loaded objects of Type T.
 		/// </summary>
 		/// <returns>The array of objects found matching the type specified.</returns>
-		public static Object[] FindObjectsOfType<T>() where T : Object
+		public static T[] FindObjectsOfType<T>() where T : Object
 		{
-			throw new System.NotImplementedException();
+			List<T> objects = new List<T>();
+			if (typeof(GameBehaviour).IsAssignableFrom(typeof(T)))
+			{
+				foreach (Entity e in Entity.entities)
+				{
+					objects.AddRange(e._components.OfType<T>());
+				}
+			}
+			if(objects.Count > 0)
+			{
+				return objects.ToArray();
+			}
+			return null;
 		}
 
 		public static implicit operator bool(Object o)

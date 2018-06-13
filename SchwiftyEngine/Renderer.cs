@@ -109,8 +109,11 @@ namespace SchwiftyEngine
 			}
 			set
 			{
-				_drawColor = value;
-				SDL_SetRenderDrawColor(_rendererPointer, _drawColor);
+				if (_drawColor != value)
+				{
+					_drawColor = value;
+					SDL_SetRenderDrawColor(_rendererPointer, _drawColor);
+				}
 			}
 		}
 
