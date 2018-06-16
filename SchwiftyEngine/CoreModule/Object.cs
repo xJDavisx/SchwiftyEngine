@@ -205,7 +205,7 @@ namespace SchwiftyEngine.CoreModule
 					objects.AddRange(e._components.OfType<T>());
 				}
 			}
-			if(objects.Count > 0)
+			if (objects.Count > 0)
 			{
 				return objects.ToArray();
 			}

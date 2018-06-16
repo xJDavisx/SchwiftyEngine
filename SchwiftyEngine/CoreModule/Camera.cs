@@ -53,19 +53,6 @@ namespace SchwiftyEngine.CoreModule
 		private int _pixelsPerUnit = 5;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Camera"/> class.
-		/// </summary>
-		public Camera() : base()
-		{
-			if (_cameras.Count == 0)
-			{
-				tag = "Main Camera";
-				_main = this;
-			}
-			_cameras.Add(this);
-		}
-
-		/// <summary>
 		/// Gets the first active <see cref="Camera"/> with the tag of "Main Camera".
 		/// </summary>
 		/// <value>The main camera.</value>
@@ -96,6 +83,16 @@ namespace SchwiftyEngine.CoreModule
 
 		private void OnDestroy()
 		{
+		}
+
+		internal override void ComponentAdded()
+		{
+			if (_cameras.Count == 0)
+			{
+				tag = "Main Camera";
+				_main = this;
+			}
+			_cameras.Add(this);
 		}
 	}
 }

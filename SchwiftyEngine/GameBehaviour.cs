@@ -47,5 +47,9 @@ namespace SchwiftyEngine
 		public GameBehaviour() : base()
 		{
 		}
+
+		internal override void ComponentAdded()
+		{
+		}
 	}
 }

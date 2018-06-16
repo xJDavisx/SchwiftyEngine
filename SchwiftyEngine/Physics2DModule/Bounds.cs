@@ -36,89 +36,146 @@
 |*|_____________________________________________________________________________________________________________________________|*|
 |*/
 
-using System.Text;
-using System.Linq;
-using System.Collections.Generic;
 using System;
-using SchwiftyEngine;
-using SchwiftyEngine.CoreModule;
-using SDL2;
-using static SDL2.SDL;
-using Color = SDL2.SDL.SDL_Color;
 
-namespace TestGame
+namespace SchwiftyEngine.Physics2DModule
 {
-	public class DrawGrid : GameBehaviour
+	/// <summary>
+	/// Represents an axis aligned bounding box.
+	/// </summary>
+	/// <remarks>
+	/// An axis-aligned bounding box, or AABB for short, is a box aligned with coordinate axes and
+	/// fully enclosing some object. Because the box is never rotated with respect to the axes, it
+	/// can be defined by just its center and extents, or alternatively by min and max points.
+	/// </remarks>
+	public struct Bounds
 	{
-		//distance the grid will draw from (0,0) in world units.
-		private int distance = 1000;
+		private Vector2 _center;
+		private Vector2 _size;
 
-		private Renderer r;
-
-		//x colors
-		private Color xColor = new Color(255, 0, 0, 255);
-
-		private Color xColorFaded100s = new Color(255, 0, 0, 150);
-		private Color xColorFaded10s = new Color(255, 0, 0, 100);
-		private Color xColorFaded1s = new Color(255, 0, 0, 50);
-
-		//y colors
-		private Color yColor = new Color(0, 255, 0, 255);
-
-		private Color yColorFaded100s = new Color(0, 255, 0, 100);
-		private Color yColorFaded10s = new Color(0, 255, 0, 75);
-		private Color yColorFaded1s = new Color(0, 255, 0, 50);
-
-		private void Draw()
+		public Bounds(Vector2 center, Vector2 size)
 		{
-			int ppu = Camera.main.PixelsPerUnit;
-			int lineLength = ppu * distance;
-			Vector2 screenPos = transform.PositionScreen;
+			_center = center;
+			_size = size;
+		}
 
-			//draw the initial X line where X = 0
-			r.DrawColor = xColor;
-			r.DrawLine(screenPos + Vector2.Left * lineLength, screenPos + Vector2.Right * lineLength);
-
-			//draw the initial Y line where Y = 0
-			r.DrawColor = yColor;
-			r.DrawLine(screenPos + Vector2.Up * lineLength, screenPos + Vector2.Down * lineLength);
-
-			//loop through and draw the rest of the Y lines
-			for (int i = 1; i < distance; i++)
+		public Vector2 center
+		{
+			get
 			{
-				r.DrawColor = yColorFaded1s;
-				if (i % 10 == 0)
-				{
-					r.DrawColor = yColorFaded10s;
-				}
-				if (i % 100 == 0)
-				{
-					r.DrawColor = yColorFaded100s;
-				}
-				r.DrawLine((screenPos + Vector2.Up * lineLength) + (Vector2.Left * (i * ppu)), (screenPos + Vector2.Down * lineLength) + (Vector2.Left * (i * ppu)));
-				r.DrawLine((screenPos + Vector2.Up * lineLength) + (Vector2.Right * (i * ppu)), (screenPos + Vector2.Down * lineLength) + (Vector2.Right * (i * ppu)));
+				return _center;
 			}
 
-			//loop through and draw the rest of the X lines
-			for (int i = 1; i < distance; i++)
+			set
 			{
-				r.DrawColor = xColorFaded1s;
-				if (i % 10 == 0)
-				{
-					r.DrawColor = xColorFaded10s;
-				}
-				if (i % 100 == 0)
-				{
-					r.DrawColor = xColorFaded100s;
-				}
-				r.DrawLine((screenPos + Vector2.Left * lineLength) + (Vector2.Up * (i * ppu)), (screenPos + Vector2.Right * lineLength) + (Vector2.Up * (i * ppu)));
-				r.DrawLine((screenPos + Vector2.Left * lineLength) + (Vector2.Down * (i * ppu)), (screenPos + Vector2.Right * lineLength) + (Vector2.Down * (i * ppu)));
+				_center = value;
 			}
 		}
 
-		private void Start()
+		public Vector2 extents
 		{
-			r = Engine.Window.Renderer;
+			get
+			{
+				return _size / 2;
+			}
+		}
+
+		public Vector2 max
+		{
+			get
+			{
+				return center + extents;
+			}
+		}
+
+		public Vector2 min
+		{
+			get
+			{
+				return center - extents;
+			}
+		}
+
+		public Vector2 size
+		{
+			get
+			{
+				return _size;
+			}
+
+			set
+			{
+				_size = value;
+			}
+		}
+
+		/// <summary>
+		/// The closest point on the bounding box. If the point is inside the bounding box,
+		/// unmodified point position will be returned.
+		/// </summary>
+		/// <param name="point">The point.</param>
+		/// <returns>The point on the bounding box or inside the bounding box.</returns>
+		/// <exception cref="NotImplementedException"></exception>
+		public Vector2 ClosestPoint(Vector2 point)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Is point contained in the bounding box?
+		///If the point passed into Contains is inside the bounding box a value of True is returned.
+		///Note: If Bounds.extents contains a negative value in any coordinate then Bounds.Contains will always return False.
+		/// </summary>
+		/// <param name="point">The point.</param>
+		/// <returns>
+		///   <c>true</c> if the point is inside the bounds; otherwise, <c>false</c>.
+		/// </returns>
+		/// <exception cref="NotImplementedException"></exception>
+		public bool Contains(Vector2 point)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Grows the bounds to encapsulate a point.
+		/// </summary>
+		/// <param name="point">The point to encapsulate.</param>
+		public void Encapsulate(Vector2 point)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Expand the bounds by increasing its size by amount along each side. Negative values
+		/// contract the sides.
+		/// </summary>
+		/// <param name="amount">The amount.</param>
+		public void Expand(Vector2 amount)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Does <paramref name="ray"/> intersect this <see cref="Bounds"/>?
+		/// </summary>
+		/// <param name="ray">The ray.</param>
+		/// <returns>
+		/// <c>true</c> if the <paramref name="ray"/> intesects this <see cref="Bounds"/>; otherwise, <c>false</c>.
+		/// </returns>
+		public bool IntersectRay(Ray ray)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Sets the bounds to the min and max value of the box. Using this function is faster than
+		/// assigning min and max separately.
+		/// </summary>
+		/// <param name="min">The minimum.</param>
+		/// <param name="max">The maximum.</param>
+		public void SetMinMax(Vector2 min, Vector2 max)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

@@ -36,10 +36,10 @@
 |*|_____________________________________________________________________________________________________________________________|*|
 |*/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Linq;
+using System.Collections.Generic;
+using System;
 using SchwiftyEngine;
 using SchwiftyEngine.CoreModule;
 using static SDL2.SDL;
@@ -48,8 +48,11 @@ namespace TestGame
 {
 	public class GameManager : GameBehaviour
 	{
+		private Player p;
+
 		private void Start()
 		{
+			p = Entity.FindObjectOfType<Player>();
 		}
 
 		private void Update()
@@ -62,7 +65,7 @@ namespace TestGame
 			{
 				Engine.IsFullScreen = !Engine.IsFullScreen;
 			}
-			Engine.Window.WindowTitle = "FPS: " + Time.FPS.ToString();
+			Engine.Window.WindowTitle = "Player Pos: (" + p.transform.Position.x + ", " + p.transform.Position.y + ")";
 		}
 	}
 }

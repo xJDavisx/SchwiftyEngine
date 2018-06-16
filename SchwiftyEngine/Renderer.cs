@@ -174,6 +174,17 @@ namespace SchwiftyEngine
 			SDL_RenderCopy(_rendererPointer, texture, ref sourceRect, ref destinationRect);
 		}
 
+		internal void DrawTextureRotated(IntPtr texture, ref SDL_Rect sourceRect, ref SDL_Rect destinationRect, float angle, ref SDL_Point center, SDL_RendererFlip flip)
+		{
+			SDL_RenderCopyEx(_rendererPointer,
+				texture,
+				ref sourceRect,
+				ref destinationRect,
+				angle,
+				ref center,
+				flip);
+		}
+
 		internal IntPtr LoadTexture(string fileName)
 		{
 			return SDL_image.IMG_LoadTexture(_rendererPointer, fileName);
@@ -196,7 +207,7 @@ namespace SchwiftyEngine
 		public void DrawLine(Vector2 start, Vector2 end, Color color)
 		{
 			SDL_SetRenderDrawColor(_rendererPointer, color);
-			SDL_RenderDrawLine(_rendererPointer, (int)start.X, (int)start.Y, (int)end.X, (int)end.Y);
+			SDL_RenderDrawLine(_rendererPointer, (int)start.x, (int)start.y, (int)end.x, (int)end.y);
 			SDL_SetRenderDrawColor(_rendererPointer, DrawColor);
 		}
 
@@ -208,7 +219,7 @@ namespace SchwiftyEngine
 		/// <param name="end">The end vector.</param>
 		public void DrawLine(Vector2 start, Vector2 end)
 		{
-			SDL_RenderDrawLine(_rendererPointer, (int)start.X, (int)start.Y, (int)end.X, (int)end.Y);
+			SDL_RenderDrawLine(_rendererPointer, (int)start.x, (int)start.y, (int)end.x, (int)end.y);
 		}
 
 		public int DrawRect(SDL_Rect rect)
@@ -222,6 +233,23 @@ namespace SchwiftyEngine
 			int rValue = SDL_RenderDrawRect(_rendererPointer, ref rect);
 			SDL_SetRenderDrawColor(_rendererPointer, DrawColor);
 			return rValue;
+		}
+
+		public void DrawRectRotated(SDL_Rect rect, Vector2 origin, float angleInRadians, Color color)
+		{
+			SDL_Point topLeft = Vector2.RotateAroundPoint(new Vector2(rect.x, rect.y), angleInRadians, origin).ToSDL_Point();
+			SDL_Point topRight = Vector2.RotateAroundPoint(new Vector2(rect.x + rect.w, rect.y), angleInRadians, origin).ToSDL_Point();
+			SDL_Point bottomLeft = Vector2.RotateAroundPoint(new Vector2(rect.x, rect.y + rect.h), angleInRadians, origin).ToSDL_Point();
+			SDL_Point bottomRight = Vector2.RotateAroundPoint(new Vector2(rect.x + rect.w, rect.y + rect.h), angleInRadians, origin).ToSDL_Point();
+			SDL_Point[] points = new SDL_Point[]
+			{
+				topLeft,topRight,bottomRight,bottomLeft, topLeft
+			};
+
+			SDL_SetRenderDrawColor(_rendererPointer, color);
+			SDL_RenderDrawLines(_rendererPointer, points, 5);
+
+			SDL_SetRenderDrawColor(_rendererPointer, DrawColor);
 		}
 	}
 }

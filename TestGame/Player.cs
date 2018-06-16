@@ -38,6 +38,7 @@
 
 using SchwiftyEngine;
 using SchwiftyEngine.CoreModule;
+using SchwiftyEngine.Physics2DModule;
 using static SDL2.SDL;
 
 namespace TestGame
@@ -47,22 +48,23 @@ namespace TestGame
 		private Camera cam;
 		private Vector2 gravity = new Vector2(0, 9.8f);
 		private Sprite playerSprite;
+		private Rigidbody2D rb;
 		private Sound s = new Sound(Resource.soundPath + "test.wav");
 		private float speed = 0;
-		public float walkSpeed = 5f;
-		public float runSpeed = 10f;
-
 		public int playerNumber = 1;
+		public float runSpeed = 10f;
+		public float walkSpeed = 5f;
 
 		private void Start()
 		{
 			cam = Camera.main;
 			playerSprite = GetComponent<Sprite>();
-			if(playerNumber == 1)
-			transform.Position = Vector2.Zero;
-			if(playerNumber == 2)
+			if (playerNumber == 1)
+				transform.Position = Vector2.Zero;
+			if (playerNumber == 2)
 				transform.Position = Vector2.Right * 100;
 			speed = walkSpeed;
+			rb = GetComponent<Rigidbody2D>();
 		}
 
 		private void Update()
@@ -83,9 +85,9 @@ namespace TestGame
 			{
 				transform.Translate(Vector2.Left * speed * Time.deltaTime);
 			}
-			if (playerNumber == 1 && Input.KeyPressed(SDL_Keycode.SDLK_w))
+			if (playerNumber == 1 && Input.KeyUp(SDL_Keycode.SDLK_w))
 			{
-				transform.Translate(Vector2.Up * speed * Time.deltaTime);
+				rb.velocity += Vector2.Up * 15;
 			}
 			if (playerNumber == 1 && Input.KeyPressed(SDL_Keycode.SDLK_s))
 			{
@@ -99,19 +101,29 @@ namespace TestGame
 
 			if (playerNumber == 1 && Input.KeyPressed(SDL_Keycode.SDLK_UP))
 			{
-				playerSprite.ScaleX += .5f * Time.deltaTime;
-				playerSprite.ScaleY += .5f * Time.deltaTime;
+				playerSprite.scaleX += .5f * Time.deltaTime;
+				playerSprite.scaleY += .5f * Time.deltaTime;
 			}
 
 			if (playerNumber == 1 && Input.KeyUp(SDL_Keycode.SDLK_DOWN))
 			{
-				playerSprite.ScaleX = .1f;
-				playerSprite.ScaleY = .1f;
+				playerSprite.scaleX = .1f;
+				playerSprite.scaleY = .1f;
+			}
+
+			if (playerNumber == 1 && Input.KeyPressed(SDL_Keycode.SDLK_LEFT))
+			{
+				transform.rotationInDegrees--;
+			}
+
+			if (playerNumber == 1 && Input.KeyPressed(SDL_Keycode.SDLK_RIGHT))
+			{
+				transform.rotationInDegrees++;
 			}
 
 			if (playerNumber == 1 && Input.KeyUp(SDL_Keycode.SDLK_b))
 			{
-				playerSprite.DrawBounds = !playerSprite.DrawBounds;
+				playerSprite.drawBounds = !playerSprite.drawBounds;
 			}
 
 			//GameObject.Velocity = (new Vector2(x, y) + gravity) * Time.DeltaTime;

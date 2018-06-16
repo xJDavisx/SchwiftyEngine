@@ -36,33 +36,14 @@
 |*|_____________________________________________________________________________________________________________________________|*|
 |*/
 
+using System;
+
 namespace SchwiftyEngine.CoreModule
 {
 	public class Transform : Component
 	{
 		private Vector2 _positionWorld = Vector2.Zero;
-		private int height;
-		private Vector2 origin = Vector2.Zero;
-		private float rotation = 0;
-		private int width;
-
-		public Transform()
-		{
-		}
-
-		public int Height
-		{
-			get
-			{
-				return height;
-			}
-
-			internal set
-			{
-				height = value;
-				origin.Y = height / 2;
-			}
-		}
+		private float _rotationInDegrees = 0;
 
 		/// <summary>
 		/// Gets or sets the position in world space.
@@ -88,50 +69,56 @@ namespace SchwiftyEngine.CoreModule
 				Vector2 camPos = Camera.main.transform.Position;
 				int ppu = Camera.main.PixelsPerUnit;
 
-				return new Vector2((Engine.Window.Width * .5f) - ((camPos.X - transform.Position.X) * ppu),
-					(Engine.Window.Height * .5f) + ((camPos.Y - transform.Position.Y) * ppu));
+				return new Vector2((Engine.Window.Width * .5f) - ((camPos.x - transform.Position.x) * ppu),
+					(Engine.Window.Height * .5f) + ((camPos.y - transform.Position.y) * ppu));
 			}
 		}
 
-		public float Rotation
+		public float rotationInDegrees
 		{
 			get
 			{
-				return rotation;
+				return _rotationInDegrees;
 			}
 
 			set
 			{
-				rotation = value;
-				if (rotation > 360f)
+				_rotationInDegrees = value;
+				if (_rotationInDegrees < 0)
 				{
-					rotation -= 360f;
+					_rotationInDegrees += 360f;
 				}
-				else if (rotation < 0)
+				else if (_rotationInDegrees > 360f)
 				{
-					rotation += 360f;
+					_rotationInDegrees -= 360f;
 				}
 			}
 		}
 
-		public int Width
+		public float rotationInRadians
 		{
 			get
 			{
-				return width;
+				return _rotationInDegrees * ((float)Math.PI / 180);
 			}
-
-			internal set
+			set
 			{
-				width = value;
-				origin.X = width / 2;
+				rotationInDegrees = value * (180 / (float)Math.PI);
 			}
+		}
+
+		internal override void ComponentAdded()
+		{
+		}
+
+		public void LookAt(Vector2 target)
+		{
 		}
 
 		public void Translate(Vector2 newPos)
 		{
-			_positionWorld.X += newPos.X;
-			_positionWorld.Y += newPos.Y;
+			_positionWorld.x += newPos.x;
+			_positionWorld.y += newPos.y;
 		}
 	}
 }

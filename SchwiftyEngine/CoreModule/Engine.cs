@@ -50,17 +50,15 @@ namespace SchwiftyEngine.CoreModule
 	public static class Engine
 	{
 		private static int FPS_CAP = 5;
+		private static bool isRunning = true;
 		private static Window window;
 		internal static SchwiftyGame _game;
 		internal static SDL_Event systemEvent;
-		private static bool isRunning = true;
 
 		/// <summary>
 		/// Gets or sets a value indicating whether this instance is full screen.
 		/// </summary>
-		/// <value>
-		///   <c>true</c> if this instance is full screen; otherwise, <c>false</c>.
-		/// </value>
+		/// <value><c>true</c> if this instance is full screen; otherwise, <c>false</c>.</value>
 		public static bool IsFullScreen
 		{
 			get
@@ -77,9 +75,7 @@ namespace SchwiftyEngine.CoreModule
 		/// <summary>
 		/// Gets the window.
 		/// </summary>
-		/// <value>
-		/// The window.
-		/// </value>
+		/// <value>The window.</value>
 		public static Window Window
 		{
 			get
@@ -92,8 +88,8 @@ namespace SchwiftyEngine.CoreModule
 				window = value;
 			}
 		}
-		
-		static void PollEvents()
+
+		private static void PollEvents()
 		{
 			List<SDL_Event> events = new List<SDL_Event>();
 			while (SDL_PollEvent(out systemEvent) != 0)
@@ -111,7 +107,6 @@ namespace SchwiftyEngine.CoreModule
 		{
 			isRunning = false;
 		}
-
 
 		/// <summary>
 		/// Initializes the specified game.
@@ -153,7 +148,7 @@ namespace SchwiftyEngine.CoreModule
 			}
 			_game.CallMethod("LoadResources");
 			Entity.CallMethodInComponents("Start");
-
+			bool callPhysics = false;
 			while (isRunning)
 			{
 				//update the Time class
@@ -161,7 +156,8 @@ namespace SchwiftyEngine.CoreModule
 
 				//poll for SDL events.
 				PollEvents();
-
+				if (callPhysics)
+					Physics2DModule.Physics2D.Update();
 				//invoke update events
 				Entity.CallMethodInComponents("Update");
 				Entity.CallMethodInComponents("LateUpdate");
@@ -174,6 +170,7 @@ namespace SchwiftyEngine.CoreModule
 
 				//finally, render the screen.
 				Window.Render();
+				callPhysics = true;
 			}
 			Entity.CallMethodInComponents("End");
 

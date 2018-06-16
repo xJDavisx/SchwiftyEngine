@@ -48,6 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioEngine.cs" />
+    <Compile Include="Physics2DModule\BoxCollider2d.cs" />
+    <Compile Include="Physics2DModule\Collider2D.cs" />
+    <Compile Include="CollisionDetectionMode2D.cs" />
     <Compile Include="CoreModule\Behaviour.cs" />
     <Compile Include="CoreModule\Camera.cs" />
     <Compile Include="CoreModule\Component.cs" />
@@ -62,8 +65,15 @@
     <Compile Include="CoreModule\Engine.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="CoreModule\Enums\HideFlags.cs" />
+    <Compile Include="Physics2DModule\Bounds.cs" />
+    <Compile Include="Physics2DModule\Physics2D.cs" />
+    <Compile Include="Physics2DModule\Ray.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Resource.cs" />
+    <Compile Include="Rigidbody2D.cs" />
+    <Compile Include="RigidbodyConstraints2D.cs" />
+    <Compile Include="RigidbodySleepMode2D.cs" />
+    <Compile Include="RigidbodyType2D.cs" />
     <Compile Include="SchwiftyGame.cs" />
     <Compile Include="Window.cs" />
     <Compile Include="CoreModule\Entity.cs" />

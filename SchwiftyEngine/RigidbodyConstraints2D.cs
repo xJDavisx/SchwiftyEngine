@@ -36,89 +36,45 @@
 |*|_____________________________________________________________________________________________________________________________|*|
 |*/
 
-using System.Text;
-using System.Linq;
-using System.Collections.Generic;
 using System;
-using SchwiftyEngine;
-using SchwiftyEngine.CoreModule;
-using SDL2;
-using static SDL2.SDL;
-using Color = SDL2.SDL.SDL_Color;
 
-namespace TestGame
+namespace SchwiftyEngine
 {
-	public class DrawGrid : GameBehaviour
+	/// <summary>
+	/// Use these flags to constrain motion of the Rigidbody2D.
+	/// </summary>
+	/// <seealso cref="Rigidbody2D.constraints"/>
+	[Flags]
+	public enum RigidbodyConstraints2D
 	{
-		//distance the grid will draw from (0,0) in world units.
-		private int distance = 1000;
+		/// <summary>
+		/// No constraints.
+		/// </summary>
+		None = 0,
 
-		private Renderer r;
+		/// <summary>
+		/// Freeze motion along the X-axis.
+		/// </summary>
+		FreezePositionX = 1,
 
-		//x colors
-		private Color xColor = new Color(255, 0, 0, 255);
+		/// <summary>
+		/// Freeze motion along the Y-axis.
+		/// </summary>
+		FreezePositionY = 2,
 
-		private Color xColorFaded100s = new Color(255, 0, 0, 150);
-		private Color xColorFaded10s = new Color(255, 0, 0, 100);
-		private Color xColorFaded1s = new Color(255, 0, 0, 50);
+		/// <summary>
+		/// Freeze rotation along the Z-axis.
+		/// </summary>
+		FreezeRotation = 4,
 
-		//y colors
-		private Color yColor = new Color(0, 255, 0, 255);
+		/// <summary>
+		/// Freeze motion along the X-axis and Y-axis.
+		/// </summary>
+		FreezePosition = FreezePositionX | FreezePositionY,
 
-		private Color yColorFaded100s = new Color(0, 255, 0, 100);
-		private Color yColorFaded10s = new Color(0, 255, 0, 75);
-		private Color yColorFaded1s = new Color(0, 255, 0, 50);
-
-		private void Draw()
-		{
-			int ppu = Camera.main.PixelsPerUnit;
-			int lineLength = ppu * distance;
-			Vector2 screenPos = transform.PositionScreen;
-
-			//draw the initial X line where X = 0
-			r.DrawColor = xColor;
-			r.DrawLine(screenPos + Vector2.Left * lineLength, screenPos + Vector2.Right * lineLength);
-
-			//draw the initial Y line where Y = 0
-			r.DrawColor = yColor;
-			r.DrawLine(screenPos + Vector2.Up * lineLength, screenPos + Vector2.Down * lineLength);
-
-			//loop through and draw the rest of the Y lines
-			for (int i = 1; i < distance; i++)
-			{
-				r.DrawColor = yColorFaded1s;
-				if (i % 10 == 0)
-				{
-					r.DrawColor = yColorFaded10s;
-				}
-				if (i % 100 == 0)
-				{
-					r.DrawColor = yColorFaded100s;
-				}
-				r.DrawLine((screenPos + Vector2.Up * lineLength) + (Vector2.Left * (i * ppu)), (screenPos + Vector2.Down * lineLength) + (Vector2.Left * (i * ppu)));
-				r.DrawLine((screenPos + Vector2.Up * lineLength) + (Vector2.Right * (i * ppu)), (screenPos + Vector2.Down * lineLength) + (Vector2.Right * (i * ppu)));
-			}
-
-			//loop through and draw the rest of the X lines
-			for (int i = 1; i < distance; i++)
-			{
-				r.DrawColor = xColorFaded1s;
-				if (i % 10 == 0)
-				{
-					r.DrawColor = xColorFaded10s;
-				}
-				if (i % 100 == 0)
-				{
-					r.DrawColor = xColorFaded100s;
-				}
-				r.DrawLine((screenPos + Vector2.Left * lineLength) + (Vector2.Up * (i * ppu)), (screenPos + Vector2.Right * lineLength) + (Vector2.Up * (i * ppu)));
-				r.DrawLine((screenPos + Vector2.Left * lineLength) + (Vector2.Down * (i * ppu)), (screenPos + Vector2.Right * lineLength) + (Vector2.Down * (i * ppu)));
-			}
-		}
-
-		private void Start()
-		{
-			r = Engine.Window.Renderer;
-		}
+		/// <summary>
+		/// Freeze rotation and motion along all axes.
+		/// </summary>
+		FreezeAll = FreezePosition | FreezeRotation
 	}
 }

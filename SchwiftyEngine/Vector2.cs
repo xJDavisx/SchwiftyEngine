@@ -37,18 +37,19 @@
 |*/
 
 using System;
+using static SDL2.SDL;
 
 namespace SchwiftyEngine
 {
 	public struct Vector2
 	{
-		private float x;
-		private float y;
+		private float _x;
+		private float _y;
 
 		public Vector2(float x, float y)
 		{
-			this.x = x;
-			this.y = y;
+			this._x = x;
+			this._y = y;
 		}
 
 		public static Vector2 Down
@@ -103,7 +104,7 @@ namespace SchwiftyEngine
 		{
 			get
 			{
-				return (float)Math.Atan(x / y);
+				return (float)Math.Atan(_x / _y);
 			}
 		}
 
@@ -111,7 +112,7 @@ namespace SchwiftyEngine
 		{
 			get
 			{
-				return (float)Math.Sqrt((x * x) + (y * y));
+				return (float)Math.Sqrt((_x * _x) + (_y * _y));
 			}
 		}
 
@@ -123,35 +124,35 @@ namespace SchwiftyEngine
 			}
 		}
 
-		public float X
+		public float x
 		{
 			get
 			{
-				return x;
+				return _x;
 			}
 
 			set
 			{
-				x = value;
+				_x = value;
 			}
 		}
 
-		public float Y
+		public float y
 		{
 			get
 			{
-				return y;
+				return _y;
 			}
 
 			set
 			{
-				y = value;
+				_y = value;
 			}
 		}
 
 		public static float Distance(Vector2 a, Vector2 b)
 		{
-			return new Vector2(a.x - b.x, a.y - b.y).Magnitude;
+			return new Vector2(a._x - b._x, a._y - b._y).Magnitude;
 		}
 
 		/// <summary>
@@ -176,71 +177,90 @@ namespace SchwiftyEngine
 
 		public static Vector2 operator -(Vector2 x, Vector2 y)
 		{
-			return new Vector2(x.x - y.x, x.y - y.y);
+			return new Vector2(x._x - y._x, x._y - y._y);
 		}
 
 		public static Vector2 operator -(Vector2 x)
 		{
-			return new Vector2(-x.x, -x.y);
+			return new Vector2(-x._x, -x._y);
 		}
 
 		public static bool operator !=(Vector2 x, Vector2 y)
 		{
-			if (x.x == y.x && x.y == y.y)
+			if (x._x == y._x && x._y == y._y)
 				return false;
 			return true;
 		}
 
 		public static Vector2 operator *(Vector2 x, Vector2 y)
 		{
-			return new Vector2(x.x * y.x, x.y * y.y);
+			return new Vector2(x._x * y._x, x._y * y._y);
 		}
 
 		public static Vector2 operator *(Vector2 x, float y)
 		{
-			return new Vector2(x.x * y, x.y * y);
+			return new Vector2(x._x * y, x._y * y);
 		}
 
 		public static Vector2 operator *(float y, Vector2 x)
 		{
-			return new Vector2(x.x * y, x.y * y);
+			return new Vector2(x._x * y, x._y * y);
 		}
 
 		public static Vector2 operator /(Vector2 x, float y)
 		{
-			return new Vector2(x.x / y, x.y / y);
+			return new Vector2(x._x / y, x._y / y);
 		}
 
 		public static Vector2 operator /(Vector2 x, Vector2 y)
 		{
-			return new Vector2(x.x / y.x, x.y / y.y);
+			return new Vector2(x._x / y._x, x._y / y._y);
 		}
 
 		public static Vector2 operator +(Vector2 x, float y)
 		{
-			return new Vector2(x.x + y, x.y + y);
+			return new Vector2(x._x + y, x._y + y);
 		}
 
 		public static Vector2 operator +(Vector2 x, Vector2 y)
 		{
-			return new Vector2(x.x + y.x, x.y + y.y);
+			return new Vector2(x._x + y._x, x._y + y._y);
 		}
 
 		public static bool operator ==(Vector2 x, Vector2 y)
 		{
-			if (x.x == y.x && x.y == y.y)
+			if (x._x == y._x && x._y == y._y)
 				return true;
 			return false;
 		}
 
+		public static Vector2 RotateAroundPoint(Vector2 original, float angleInRad, Vector2 origin = default(Vector2))
+		{
+			float s = (float)Math.Sin(angleInRad);
+			float c = (float)Math.Cos(angleInRad);
+			Vector2 newVector = new Vector2();
+			newVector.x = ((original.x - origin.x) * c - (original.y - origin.y) * s) + origin.x;
+			newVector.y = ((original.y - origin.y) * c + (original.x - origin.x) * s) + origin.y;
+			return newVector;
+		}
+
 		public float Distance(Vector2 other)
 		{
-			return new Vector2(x - other.x, y - other.y).Magnitude;
+			return new Vector2(_x - other._x, _y - other._y).Magnitude;
 		}
 
 		public Vector2 SwapCoordinates()
 		{
-			return new Vector2(y, x);
+			return new Vector2(_y, _x);
+		}
+
+		/// <summary>
+		/// Converts a <see cref="Vector2"/> struct to a <see cref="SDL_Point"/> struct.
+		/// </summary>
+		/// <returns>An <see cref="SDL_Point"/> struct with the coordinates of this <see cref="Vector2"/>.</returns>
+		public SDL_Point ToSDL_Point()
+		{
+			return new SDL_Point((int)x, (int)y);
 		}
 	}
 }

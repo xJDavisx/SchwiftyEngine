@@ -45,11 +45,13 @@ namespace SchwiftyEngine.CoreModule
 	public class Sprite : Behaviour
 	{
 		private Color _boundsColor = new Color(255, 255, 255, 255);
+		private SDL_Rect _destinationRect;
 		private int _height;
-		private Vector2 _origin;
+		private SDL_Point _origin;
 		private Renderer _renderer;
 		private float _scaleX = 1;
 		private float _scaleY = 1;
+		private SDL_Rect _sourceRect;
 		private Texture _texture;
 		private int _width;
 
@@ -57,12 +59,12 @@ namespace SchwiftyEngine.CoreModule
 		{
 		}
 
-		public bool DrawBounds
+		public bool drawBounds
 		{
 			get; set;
 		}
 
-		public int Height
+		public int height
 		{
 			get
 			{
@@ -75,7 +77,7 @@ namespace SchwiftyEngine.CoreModule
 			}
 		}
 
-		public Vector2 Origin
+		public SDL_Point origin
 		{
 			get
 			{
@@ -83,7 +85,7 @@ namespace SchwiftyEngine.CoreModule
 			}
 		}
 
-		public float ScaleX
+		public float scaleX
 		{
 			get
 			{
@@ -96,7 +98,7 @@ namespace SchwiftyEngine.CoreModule
 			}
 		}
 
-		public float ScaleY
+		public float scaleY
 		{
 			get
 			{
@@ -109,7 +111,7 @@ namespace SchwiftyEngine.CoreModule
 			}
 		}
 
-		public int Width
+		public int width
 		{
 			get
 			{
@@ -126,32 +128,35 @@ namespace SchwiftyEngine.CoreModule
 		{
 			int ppu = Camera.main.PixelsPerUnit;
 			//this is the position and size of the image on the screen. use this to scale.
-			SDL_Rect DestinationRect = new SDL_Rect() { x = (int)(transform.PositionScreen.X - (_origin.X * ppu) * _scaleX), y = (int)(transform.PositionScreen.Y - (_origin.Y * ppu) * _scaleY), w = (int)(48 * ppu * _scaleX), h = (int)(50 * ppu * _scaleY)};
+			_destinationRect = new SDL_Rect() { x = (int)(transform.PositionScreen.x - (_origin.x * ppu) * _scaleX), y = (int)(transform.PositionScreen.y - (_origin.y * ppu) * _scaleY), w = (int)(48 * ppu * _scaleX), h = (int)(50 * ppu * _scaleY) };
+			SDL_Point realOrigin = new SDL_Point(_destinationRect.w / 2, _destinationRect.h / 2);
+			_renderer.DrawTextureRotated(_texture.TexturePointer,
+				ref _sourceRect,
+				ref _destinationRect,
+				transform.rotationInDegrees,
+				ref realOrigin,
+				SDL_RendererFlip.SDL_FLIP_NONE);
 
-			//this is the rect that determines what portion of the texture to show. think choosing an animation frame from a spritemap.
-			SDL_Rect SourceRect = new SDL_Rect() { x = 0, y = 0, w = 48, h = 50 };
-
-			_renderer.DrawTexture(
-				_texture.TexturePointer,
-				SourceRect,
-				DestinationRect);
-			if (DrawBounds)
+			if (drawBounds)
 			{
-				_renderer.DrawRect(DestinationRect, _boundsColor);
+				//_renderer.DrawRect(_destinationRect, _boundsColor);
+				_renderer.DrawRectRotated(_destinationRect, transform.PositionScreen, transform.rotationInRadians, _boundsColor);
 			}
 		}
 
-		private void Start()
+		internal override void ComponentAdded()
 		{
 			_renderer = Engine.Window.Renderer;
 		}
 
-		public void LoadTexture(string fileName)
+		public void loadTexture(string fileName)
 		{
 			_texture = new Texture();
 			_texture.LoadTexture(fileName);
 
-			_origin = new Vector2(48 * .5f, 50 * .5f);
+			_origin = new SDL_Point((int)(48 * .5f), (int)(50 * .5f));
+			//this is the rect that determines what portion of the texture to show. think choosing an animation frame from a spritemap.
+			_sourceRect = new SDL_Rect() { x = 0, y = 0, w = 48, h = 50 };
 		}
 	}
 }

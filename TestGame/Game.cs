@@ -38,6 +38,7 @@
 
 using SchwiftyEngine;
 using SchwiftyEngine.CoreModule;
+using SchwiftyEngine.Physics2DModule;
 
 namespace TestGame
 {
@@ -62,21 +63,25 @@ namespace TestGame
 			Entity player = Entity.AddEntity("Player");
 			Player p = player.AddComponent<Player>();
 			Sprite s = player.AddComponent<Sprite>();
-			s.LoadTexture(Resource.texturePath + "player\\player-spritemap-v9.png");
-			s.ScaleX = .1f;
-			s.ScaleY = .1f;
+			Rigidbody2D r = player.AddComponent<Rigidbody2D>();
+			//BoxCollider2d b = player.AddComponent<BoxCollider2d>();
+
+			s.loadTexture(Resource.texturePath + "player\\player-spritemap-v9.png");
+			s.scaleX = .1f;
+			s.scaleY = .1f;
 			s.enabled = true;
 			p.enabled = true;
+			//b.enabled = true;
 
-			Entity player2 = Entity.AddEntity("Player2");
-			Player p2 = player2.AddComponent<Player>();
-			Sprite s2 = player2.AddComponent<Sprite>();
-			s2.LoadTexture(Resource.texturePath + "player\\player-spritemap-v9.png");
-			s2.ScaleX = .1f;
-			s2.ScaleY = .1f;
-			p2.playerNumber = 2;
-			s2.enabled = true;
-			p2.enabled = true;
+			//Entity player2 = Entity.AddEntity("Player2");
+			//Player p2 = player2.AddComponent<Player>();
+			//Sprite s2 = player2.AddComponent<Sprite>();
+			//s2.loadTexture(Resource.texturePath + "player\\player-spritemap-v9.png");
+			//s2.scaleX = .1f;
+			//s2.scaleY = .1f;
+			//p2.playerNumber = 2;
+			//s2.enabled = true;
+			//p2.enabled = true;
 		}
 	}
 }

@@ -42,18 +42,17 @@ namespace TestGame
 {
 	internal class Program
 	{
-		#region Private Methods
-
 		private static void Main(string[] args)
 		{
 			//Create the Game object that interacts with the engine.
 			Game g = new Game();
-			g.positionX = 100;
-			g.positionY = 100;
+			g.positionX = 0;
+			g.positionY = 50;
+			g.width = 600;
+			g.height = 600;
+
 			//start the game!
 			g.StartGame();
 		}
-
-		#endregion Private Methods
 	}
 }

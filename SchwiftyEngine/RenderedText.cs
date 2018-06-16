@@ -121,6 +121,10 @@ namespace SchwiftyEngine.UI
 			SDL_FreeSurface(surface);
 		}
 
+		internal override void ComponentAdded()
+		{
+		}
+
 		public static void AddFont(string name, Font f)
 		{
 			if (!Fonts.ContainsKey(name))

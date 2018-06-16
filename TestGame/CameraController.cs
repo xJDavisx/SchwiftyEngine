@@ -36,12 +36,14 @@
 |*|_____________________________________________________________________________________________________________________________|*|
 |*/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Linq;
+using System.Collections.Generic;
+using System;
 using SchwiftyEngine;
 using SchwiftyEngine.CoreModule;
+
+using System.Linq;
 
 namespace TestGame
 {
@@ -61,11 +63,11 @@ namespace TestGame
 
 		private void Update()
 		{
-			transform.Position = Vector2.Lerp(p.transform.Position, transform.Position, Time.deltaTime);
+			transform.Position = Vector2.Lerp(p.transform.Position, transform.Position, 10 * Time.deltaTime);
 			Vector2 scroll;
 			if (Input.MouseScrollWheel(out scroll))
 			{
-				Camera.main.PixelsPerUnit += (int)scroll.Y;
+				Camera.main.PixelsPerUnit += (int)scroll.y;
 			}
 			if (Input.KeyUp(SDL2.SDL.SDL_Keycode.SDLK_KP_1))
 			{

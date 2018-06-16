@@ -2262,7 +2262,17 @@ namespace SDL2
 		);
 
 		/* renderer refers to an SDL_Renderer*, texture to an SDL_Texture* */
-
+		/// <summary>
+		/// Use this function to copy a portion of the texture to the current rendering target, optionally rotating it by angle around the given center and also flipping it top-bottom and/or left-right.
+		/// </summary>
+		/// <param name="renderer">The renderer pointer.</param>
+		/// <param name="texture">The texture pointer.</param>
+		/// <param name="srcrect">the source <see cref="SDL_Rect"/> structure or NULL for the entire texture</param>
+		/// <param name="dstrect">the destination <see cref="SDL_Rect"/> structure or NULL for the entire rendering target</param>
+		/// <param name="angle">an angle in degrees that indicates the rotation that will be applied to dstrect, rotating it in a clockwise direction</param>
+		/// <param name="center">a pointer to a point indicating the point around which dstrect will be rotated (if NULL, rotation will be done around dstrect.w/2, dstrect.h/2)</param>
+		/// <param name="flip">a <see cref="SDL_RendererFlip"/> value stating which flipping actions should be performed on the texture</param>
+		/// <returns></returns>
 		[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int SDL_RenderCopyEx(
 			IntPtr renderer,
@@ -3303,15 +3313,56 @@ namespace SDL2
 		{
 			public int x;
 			public int y;
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="SDL_Point"/> struct with the passed in x and y values.
+			/// </summary>
+			/// <param name="x">The x value.</param>
+			/// <param name="y">The y value.</param>
+			public SDL_Point(int x, int y)
+			{
+				this.x = x;
+				this.y = y;
+			}
 		}
 
+		/// <summary>
+		/// A structure used for defining rectangles.
+		/// </summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct SDL_Rect
 		{
+			/// <summary>
+			/// The x coordinate of the top left corner.
+			/// </summary>
 			public int x;
+			/// <summary>
+			/// The y coordinate of the top left corner.
+			/// </summary>
 			public int y;
+			/// <summary>
+			/// The width of the rectangle.
+			/// </summary>
 			public int w;
+			/// <summary>
+			/// The height of the rectangle.
+			/// </summary>
 			public int h;
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="SDL_Rect"/> struct.
+			/// </summary>
+			/// <param name="x">The x coordinate of the top left corner.</param>
+			/// <param name="y">The y coordinate of the top left corner.</param>
+			/// <param name="w">The width of the rectangle.</param>
+			/// <param name="h">The height of the rectangle.</param>
+			public SDL_Rect(int x, int y, int w, int h)
+			{
+				this.x = x;
+				this.y = y;
+				this.w = w;
+				this.h = h;
+			}
 		}
 
 		/* Only available in 2.0.4 */

@@ -104,6 +104,8 @@ namespace SchwiftyEngine.CoreModule
 			}
 		}
 
+		internal abstract void ComponentAdded();
+
 		/// <summary>
 		/// Sends the message.
 		/// </summary>

@@ -147,6 +147,7 @@ namespace SchwiftyEngine.CoreModule
 			T c = new T();
 			_components = _components.Add(c);
 			c.entity = this;
+			c.ComponentAdded();
 			return c;
 		}
 
